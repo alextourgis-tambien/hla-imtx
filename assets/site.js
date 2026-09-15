@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.6', ready: false };
+  const app = { version: '0.5.7', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -276,18 +276,18 @@
           }),
         ];
       }
-      // 30% of the available sticky travel: section height minus pinned viewport height.
+      // 40% of the available sticky travel: section height minus pinned viewport height.
       const phase = ScrollTrigger.create({
         trigger: section, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true,
-        onUpdate: self => apply(self.progress >= 0.3 ? 1 : 0),
-        onRefresh: self => apply(self.progress >= 0.3 ? 1 : 0),
+        onUpdate: self => apply(self.progress >= 0.4 ? 1 : 0),
+        onRefresh: self => apply(self.progress >= 0.4 ? 1 : 0),
       });
       const visibility = ScrollTrigger.create({
         // Wait until the orb cluster itself is on screen, not just the section's top edge.
         trigger: section, start: 'top 25%', end: 'bottom top',
         onToggle: self => {
           visible = self.isActive;
-          if (visible) apply(phase.progress >= 0.3 ? 1 : 0, true);
+          if (visible) apply(phase.progress >= 0.4 ? 1 : 0, true);
           else {
             transitions.forEach(tween => tween.kill());
             pulses.flat().forEach(tween => tween.pause());
@@ -296,7 +296,7 @@
         },
       });
       visible = visibility.isActive;
-      apply(phase.progress >= 0.3 ? 1 : 0, true);
+      apply(phase.progress >= 0.4 ? 1 : 0, true);
       cleanups.push(() => {
         phase.kill(); visibility.kill();
         transitions.forEach(tween => tween.kill()); pulses.flat().forEach(tween => tween.kill());

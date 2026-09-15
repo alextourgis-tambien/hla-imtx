@@ -163,3 +163,8 @@ La correction du même nom de famille ne suffisait pas chez Alex. La face correc
 ## Hauteur sticky pilotée dans Webflow
 
 Suppression de la hauteur 200vh imposée par le CSS personnalisé sur desktop/tablette. La hauteur définie dans Webflow (400vh selon Alex) reprend la main. Le contenu reste sticky sur 100svh ; la transition se calcule toujours à 30% du parcours top/top → bottom/bottom, recalculé par ScrollTrigger. Embeds inchangés.
+
+
+## 0.5.7 — bascule sticky à 40%
+
+À la demande d’Alex, passage de 30% à 40% du parcours sticky dans les quatre branches de mise à jour (scroll, refresh, entrée et initialisation). Hauteur pilotée par Webflow, animations et embeds conservés. Syntaxe JS et diff vérifiés.
