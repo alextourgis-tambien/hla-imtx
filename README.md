@@ -126,3 +126,7 @@ Remplace les seuils 40/60% : sur desktop/tablette (≥768px) uniquement, un bloc
 La zone de focus des blocs HLA est élargie de chaque côté du centre du logo : marge de 15% de la hauteur d’écran, plafonnée à 160 px. Les blocs s’éclairent donc plus tôt et restent éclairés plus longtemps après le passage. Desktop/tablette uniquement, transition 0,35 s conservée.
 
 Diagnostic checkbox : les inputs natifs `.checkbox` passaient bien à checked=true, mais `appearance:none` et l’absence de style :checked les laissaient visuellement blancs. Ajout d’un fond rouge et d’une coche blanche pour :checked, ainsi que d’un contour focus-visible. Aucun changement de consentement, de validation, de nom de champ ni de soumission. Tests de clic et touche Espace réussis sur copie locale, deux cases visuellement cochées et contour clavier confirmé. La case testée sur la préproduction a été remise à son état initial ; aucun formulaire soumis.
+
+## 0.5.2 — bascule sticky à 40%
+
+Le remplacement des orbes et le changement des opacités des textes et de la cellule démarrent désormais à 40% du parcours sticky au lieu de 50%, y compris au retour et après recalcul. Timings et amplitudes inchangés.
