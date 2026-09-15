@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.9', ready: false };
+  const app = { version: '0.5.0', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -156,21 +156,33 @@
   }
 
   function hlaContentFocus(gsap, ScrollTrigger) {
-    document.querySelectorAll('.hla__c-parent').forEach(element => {
-      let focused = null;
-      gsap.set(element, { opacity: 0.2 });
-      const fadeTo = gsap.quickTo(element, 'opacity', { duration: 0.35, ease: 'power1.inOut' });
-      const update = trigger => {
-        const next = trigger.progress >= 0.4 && trigger.progress <= 0.6;
-        if (focused === next) return;
-        focused = next;
-        fadeTo(next ? 1 : 0.2);
-      };
-      const trigger = ScrollTrigger.create({
-        trigger: element, start: 'top bottom', end: 'bottom top',
-        invalidateOnRefresh: true, onUpdate: update, onRefresh: update,
+    document.querySelectorAll('.hla__wrapper').forEach(wrapper => {
+      const logo = wrapper.querySelector('.hla__hla-logo');
+      const elements = [...wrapper.querySelectorAll('.hla__c-parent')];
+      if (!logo || !elements.length) return;
+      const states = elements.map(element => {
+        gsap.set(element, { opacity: 0.2 });
+        return { element, focused: null, fadeTo: gsap.quickTo(element, 'opacity', {
+          duration: 0.35, ease: 'power1.inOut',
+        }) };
       });
-      update(trigger);
+      const update = () => {
+        // Read the actual sticky logo position on every scroll, including its release at the end.
+        const logoRect = logo.getBoundingClientRect();
+        const referenceY = logoRect.top + logoRect.height / 2;
+        const logoVisible = logoRect.height > 0 && referenceY > 0 && referenceY < innerHeight;
+        const changes = states.map(state => {
+          const rect = state.element.getBoundingClientRect();
+          return { state, focused: logoVisible && rect.top <= referenceY && rect.bottom >= referenceY };
+        });
+        changes.forEach(({ state, focused }) => {
+          if (state.focused === focused) return;
+          state.focused = focused;
+          state.fadeTo(focused ? 1 : 0.2);
+        });
+      };
+      ScrollTrigger.create({ start: 0, end: 'max', onUpdate: update, onRefresh: update });
+      update();
     });
   }
 
@@ -371,7 +383,7 @@
         });
         scrollAnimations(gsap, SplitText, scrollLines, splits);
         driftingOrbs(gsap);
-        hlaContentFocus(gsap, ScrollTrigger);
+        if (context.conditions.desktop) hlaContentFocus(gsap, ScrollTrigger);
         const cleanupSticky = context.conditions.desktop ? stickyAnimations(gsap, ScrollTrigger) : () => {};
         const cleanupRed = redImageSequence(gsap, ScrollTrigger);
         return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };

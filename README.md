@@ -116,3 +116,7 @@ Chaque `.hla__c-parent` possède sa propre progression `top bottom` → `bottom 
 ## 0.4.9 — fondus affinés
 
 Transitions des `.hla__c-parent` entre 20% et 100% sur 0,35 s (power1.inOut), avec un tween réutilisé pour suivre les inversions rapides sans accumulation. Seuils 40% et 60% conservés. Les logos `.hla__logo` et `.hla__hla-logo` apparaissent désormais en 0,55 s au lieu de 1,1 s ; seuil `top 75%` conservé.
+
+## 0.5.0 — blocs HLA alignés sur le logo
+
+Remplace les seuils 40/60% : sur desktop/tablette (≥768px) uniquement, un bloc est à 100% lorsque son rectangle traverse la ligne horizontale passant par le centre réel de `.hla__hla-logo`. Sinon 20%. Transition 0,35 s. Position du logo relue au scroll pour suivre son sticky et sa libération. Sur mobile, aucun effet d’atténuation sur les blocs ; nettoyage assuré lors du changement de breakpoint.
