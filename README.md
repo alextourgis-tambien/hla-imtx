@@ -56,3 +56,7 @@ Conserver le suffixe `?v=0.2.0` dans les deux blocs Webflow, y compris après le
 ## Correction du cache navigateur
 
 Le CDN renvoie `max-age=604800` (sept jours). Une purge CDN ne vide pas le cache local : le site pouvait encore exécuter 0.2.0 après publication de 0.3.0. Les blocs utilisent désormais un paramètre `refresh` calculé automatiquement à chaque chargement. Le paramètre utilisateur `v=0.2.0` reste fixe. Remplacer une fois les anciens blocs et republier Webflow ; ne pas conserver les anciens imports en doublon. La purge CDN reste requise après chaque livraison.
+
+## Ajustement 0.3.1 — animations plus précoces
+
+Déclenchement des animations au scroll dès `top 100%` au lieu de `top 85%`. Les tracés terminent à `bottom 75%` au lieu de `bottom 35%`, avec un lissage de 0,3 s. Textes : durée 0,6 s et décalage entre lignes 0,08 s. Fondus et apparition de PRAME : 0,6 s. Animation initiale du hero conservée. Blocs Webflow et paramètre `v=0.2.0` inchangés.

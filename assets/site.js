@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.3.0', ready: false };
+  const app = { version: '0.3.1', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -89,7 +89,7 @@
   function scrollAnimations(gsap, SplitText, scrollLines, splits) {
     scrollLines.forEach(line => {
       const paths = [...line.querySelectorAll('path, line, polyline')].filter(path => !path.closest('defs'));
-      const trigger = { trigger: line, start: 'top 85%', end: 'bottom 35%', scrub: 0.6, invalidateOnRefresh: true };
+      const trigger = { trigger: line, start: 'top 100%', end: 'bottom 75%', scrub: 0.3, invalidateOnRefresh: true };
       if (!paths.length) {
         gsap.fromTo(line, { clipPath: 'inset(0 0 100% 0)' }, {
           clipPath: 'inset(0 0 0% 0)', ease: 'none', scrollTrigger: trigger,
@@ -115,8 +115,8 @@
     const targets = candidates.filter(el => !candidates.some(parent => parent !== el && parent.contains(el)));
     targets.forEach(el => {
       if (!el.textContent.trim()) {
-        gsap.from(el, { opacity: 0, y: 24, duration: 0.85, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        gsap.from(el, { opacity: 0, y: 24, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 100%', once: true },
         });
         return;
       }
@@ -129,16 +129,16 @@
             return;
           }
           return gsap.from(self.lines, {
-            opacity: 0, yPercent: 105, duration: 0.85, stagger: 0.12, ease: 'power3.out',
+            opacity: 0, yPercent: 105, duration: 0.6, stagger: 0.08, ease: 'power3.out',
             onStart: () => { revealed = true; },
-            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+            scrollTrigger: { trigger: el, start: 'top 100%', once: true },
           });
         },
       }));
     });
     document.querySelectorAll(FADE_SELECTOR).forEach(el => {
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 100%', once: true },
       });
     });
   }
