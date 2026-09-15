@@ -150,3 +150,7 @@ Le header contient désormais un garde synchrone de visibilité avant le premier
 ## Références éditables
 
 Coller les 27 références en HTML formaté dans un élément Rich Text Webflow de classe `references__richtext`. Les paragraphes, interligne et italiques sont stylés par le CSS existant, sans modification des embeds. Le texte reste directement éditable dans Webflow. Numéros explicites conservés pour ne pas renuméroter automatiquement les citations. Le fichier d’import local `references-hla.html` fournit un bouton de copie HTML avec sélection manuelle en secours. Bibliographie fournie, non vérifiée.
+
+## Correction police italique 400
+
+Le CSS Webflow publié `hla-imtx.shared.b845b8b25.css` déclare HairlineItalic en première source et Italic en seconde pour Ppneuemontreal / 400 / italic. Le navigateur utilise donc Hairline, ce qui donne une impression de faible opacité. Déclaration tardive du même triplet avec uniquement le fichier Italic déjà hébergé par le projet. Aucun changement d’opacité ni des variantes 300/600/700. Correction durable possible dans les réglages Fonts Webflow en dissociant Hairline Italic de Regular Italic.

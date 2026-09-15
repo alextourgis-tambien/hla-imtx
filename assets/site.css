@@ -58,3 +58,12 @@ input[type="checkbox"].Checkbox:focus-visible {
 .references__richtext p { margin-top: 0; margin-bottom: 1.5em; line-height: inherit; }
 .references__richtext p:last-child { margin-bottom: 0; }
 .references__richtext em { font-family: inherit; font-weight: inherit; font-style: italic; }
+
+/* Webflow lists HairlineItalic first for 400 italic; use the actual regular italic. */
+@font-face {
+  font-family: Ppneuemontreal;
+  src: url("https://cdn.prod.website-files.com/6a95fac589c51a9ff55162eb/6aa7c81cc4c07194faaa48f0_PPNeueMontreal-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
