@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.4', ready: false };
+  const app = { version: '0.5.5', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -86,10 +86,10 @@
     return svg;
   }
 
-  function scrollAnimations(gsap, SplitText, scrollLines, splits) {
+  function scrollAnimations(gsap, SplitText, scrollLines, splits, desktop) {
     scrollLines.forEach(line => {
       const paths = [...line.querySelectorAll('path, line, polyline')].filter(path => !path.closest('defs'));
-      const trigger = { trigger: line, start: 'top 100%', end: 'bottom 75%', scrub: 0.3, invalidateOnRefresh: true };
+      const trigger = { trigger: line, start: !desktop && line.matches('.road__line-red') ? 'top 90%' : 'top 100%', end: 'bottom 75%', scrub: 0.3, invalidateOnRefresh: true };
       if (!paths.length) {
         gsap.fromTo(line, { clipPath: 'inset(0 0 100% 0)' }, {
           clipPath: 'inset(0 0 0% 0)', ease: 'none', scrollTrigger: trigger,
@@ -151,6 +151,23 @@
       gsap.fromTo(el, { opacity: 0 }, {
         opacity: 1, duration: isLogo ? 0.55 : 0.6, ease: isLogo ? 'power1.out' : 'power2.out',
         scrollTrigger: { trigger: el, start: isLogo ? 'top 75%' : 'top 100%', once: true },
+      });
+    });
+  }
+
+  function mobileReveals(gsap) {
+    document.querySelectorAll('.hla__c-parent').forEach(element => {
+      gsap.fromTo(element, { opacity: 0 }, {
+        opacity: 1, duration: 0.55, ease: 'power1.out',
+        scrollTrigger: { trigger: element, start: 'top 90%', once: true },
+      });
+    });
+    const first = '.orbs.is--one, .orbs.is--two, .orbs.is--three, .orbs.is--four';
+    const second = '.orbs.is--one-bis, .orbs.is--two-bis, .orbs.is--three-bis, .orbs.is--four-bis';
+    document.querySelectorAll(`${first}, ${second}`).forEach(orb => {
+      gsap.fromTo(orb, { opacity: 0, scale: 0, transformOrigin: 'center center' }, {
+        opacity: orb.matches(first) ? 0.7 : 1, scale: 1, duration: 0.85, ease: 'power2.inOut',
+        scrollTrigger: { trigger: orb, start: 'top 90%', once: true },
       });
     });
   }
@@ -427,9 +444,10 @@
             scrub: 0.8, invalidateOnRefresh: true,
           },
         });
-        scrollAnimations(gsap, SplitText, scrollLines, splits);
+        scrollAnimations(gsap, SplitText, scrollLines, splits, context.conditions.desktop);
         driftingOrbs(gsap);
         if (context.conditions.desktop) hlaContentFocus(gsap, ScrollTrigger);
+        else mobileReveals(gsap);
         const cleanupSticky = context.conditions.desktop ? stickyAnimations(gsap, ScrollTrigger) : () => {};
         const cleanupRed = redImageSequence(gsap, ScrollTrigger);
         return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };

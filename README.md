@@ -138,3 +138,7 @@ Décision Alex : remplacement du seuil 40% par 30% du parcours sticky, pour avan
 ## 0.5.4 — arrivée du bouton au formulaire
 
 Les liens `.button__main` vers `#form` s’arrêtent 10 rem au-dessus du formulaire. La valeur se règle dans `#form { scroll-margin-top: 10rem; }`. Défilement sur 0,9 s, position de layout recalculée pendant le trajet, interruption par défilement manuel, arrivée immédiate si mouvement réduit. Le gestionnaire évite que le smooth scroll Webflow écrase le décalage. Test navigateur sur copie du HTML publié avec scripts Webflow conservés : arrivée à 215,625 px du haut pour une marge calculée de 215,9 px (10 rem). Embeds inchangés.
+
+## 0.5.5 — apparitions mobile
+
+Sous 768 px uniquement : chaque `.hla__c-parent` apparaît de 0 à 100% en 0,55 s à `top 90%`. Chaque orb des deux groupes apparaît indépendamment à `top 90%`, de scale 0 à 1 sur 0,85 s ; opacité finale 0,7 pour les premiers et 1 pour les bis. Apparitions uniques, gérées par le contexte matchMedia pour restauration au changement de breakpoint. `.road__line-red` démarre à `top 90%` sur mobile au lieu de `top 100%`, fin et scrub conservés. Desktop/tablette et embeds inchangés. Vérification navigateur à 390×844 sur HTML Webflow avec scripts conservés : états initiaux à zéro, premiers orbes à 0,7/scale 1, bis à 1/scale 1, cinq blocs HLA à 1 après leur entrée. Syntaxe JS et diff vérifiés.
