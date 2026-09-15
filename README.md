@@ -84,3 +84,7 @@ Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démar
 ## 0.4.2 — disparition des orbes de section
 
 `.roadmap__orbs` se déplace de 35% de sa largeur vers la droite et de 10% de sa hauteur vers le haut, en disparaissant. `.thrid__orbs` suit le déplacement opposé : gauche et bas. Progression liée au scroll, de `top 95%` à `bottom 50%`, lissage 0,6 s ; réversible au retour. Les deux classes ont été vérifiées dans le HTML Webflow publié. Liens inchangés ; diffusion JavaScript toujours en attente de la fin du quota de purge CDN.
+
+## 0.4.3 — logo HLA
+
+Ajout de `.hla__hla-logo` aux fondus : opacité 0 → 1 à son entrée dans la vue, durée 0,6 s, une seule fois. Liens Webflow inchangés.
