@@ -154,3 +154,7 @@ Coller les 27 références en HTML formaté dans un élément Rich Text Webflow 
 ## Correction police italique 400
 
 Le CSS Webflow publié `hla-imtx.shared.b845b8b25.css` déclare HairlineItalic en première source et Italic en seconde pour Ppneuemontreal / 400 / italic. Le navigateur utilise donc Hairline, ce qui donne une impression de faible opacité. Déclaration tardive du même triplet avec uniquement le fichier Italic déjà hébergé par le projet. Aucun changement d’opacité ni des variantes 300/600/700. Correction durable possible dans les réglages Fonts Webflow en dissociant Hairline Italic de Regular Italic.
+
+## Isolation de la police italique des références
+
+La correction du même nom de famille ne suffisait pas chez Alex. La face correcte utilise désormais le nom unique `HLA Regular Italic`, appliqué aux `em` de `.hla__dropdown-text` (conteneur publié actuel) et `.references__richtext`. Test navigateur sur copie du HTML publié : famille calculée correcte, poids 400, opacité 1, capture confirmant des italiques lisibles de graisse normale.
