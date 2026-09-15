@@ -80,3 +80,7 @@ Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démar
 ## 0.4.1 — PRAME ancré en haut
 
 `.prame__text` apparaît à son entrée dans la vue (`top 90%`) avec un scale 0 → 1, une opacité 0 → 1 et `transform-origin: 50% 0%` (haut-centre), durée 0,7 s. Remplace sa précédente translation verticale. Déploiement GitHub effectué ; la purge JavaScript reste en attente de la fin de la limitation CDN signalée pour 0.4.0.
+
+## 0.4.2 — disparition des orbes de section
+
+`.roadmap__orbs` se déplace de 35% de sa largeur vers la droite et de 10% de sa hauteur vers le haut, en disparaissant. `.thrid__orbs` suit le déplacement opposé : gauche et bas. Progression liée au scroll, de `top 95%` à `bottom 50%`, lissage 0,6 s ; réversible au retour. Les deux classes ont été vérifiées dans le HTML Webflow publié. Liens inchangés ; diffusion JavaScript toujours en attente de la fin du quota de purge CDN.

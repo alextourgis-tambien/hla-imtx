@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.1', ready: false };
+  const app = { version: '0.4.2', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -149,6 +149,24 @@
       if (matchMedia('(min-width: 768px)').matches && el.closest('.sticky')) return;
       gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out',
         scrollTrigger: { trigger: el, start: 'top 100%', once: true },
+      });
+    });
+  }
+
+  function driftingOrbs(gsap) {
+    [
+      { selector: '.roadmap__orbs', x: 35, y: -10 },
+      { selector: '.thrid__orbs', x: -35, y: 10 },
+    ].forEach(({ selector, x, y }) => {
+      document.querySelectorAll(selector).forEach(orb => {
+        if (orb.tagName === 'IMG') orb.loading = 'eager';
+        gsap.to(orb, {
+          xPercent: x, yPercent: y, opacity: 0, ease: 'none',
+          scrollTrigger: {
+            trigger: orb, start: 'top 95%', end: 'bottom 50%',
+            scrub: 0.6, invalidateOnRefresh: true,
+          },
+        });
       });
     });
   }
@@ -319,6 +337,7 @@
           },
         });
         scrollAnimations(gsap, SplitText, scrollLines, splits);
+        driftingOrbs(gsap);
         const cleanupSticky = context.conditions.desktop ? stickyAnimations(gsap, ScrollTrigger) : () => {};
         const cleanupRed = redImageSequence(gsap, ScrollTrigger);
         return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };
