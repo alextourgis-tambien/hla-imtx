@@ -19,7 +19,6 @@ svg.hero__line { aspect-ratio: 223 / 1222; }
 .red__wrapper-img[data-hla-red-frame="2"] .red__img.is--2,
 .red__wrapper-img[data-hla-red-frame="3"] .red__img.is--3 { opacity: 1 !important; }
 @media (min-width: 768px) {
-  .sticky { height: 200vh; }
   .sticky__element { height: 100svh; position: sticky; top: 0; }
 }
 /* Keep a single pinned visual on tablet as well as desktop. */

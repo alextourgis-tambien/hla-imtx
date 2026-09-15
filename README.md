@@ -158,3 +158,8 @@ Le CSS Webflow publié `hla-imtx.shared.b845b8b25.css` déclare HairlineItalic e
 ## Isolation de la police italique des références
 
 La correction du même nom de famille ne suffisait pas chez Alex. La face correcte utilise désormais le nom unique `HLA Regular Italic`, appliqué aux `em` de `.hla__dropdown-text` (conteneur publié actuel) et `.references__richtext`. Test navigateur sur copie du HTML publié : famille calculée correcte, poids 400, opacité 1, capture confirmant des italiques lisibles de graisse normale.
+
+
+## Hauteur sticky pilotée dans Webflow
+
+Suppression de la hauteur 200vh imposée par le CSS personnalisé sur desktop/tablette. La hauteur définie dans Webflow (400vh selon Alex) reprend la main. Le contenu reste sticky sur 100svh ; la transition se calcule toujours à 30% du parcours top/top → bottom/bottom, recalculé par ScrollTrigger. Embeds inchangés.
