@@ -130,3 +130,7 @@ Diagnostic checkbox : les inputs natifs `.checkbox` passaient bien à checked=tr
 ## 0.5.2 — bascule sticky à 40%
 
 Le remplacement des orbes et le changement des opacités des textes et de la cellule démarrent désormais à 40% du parcours sticky au lieu de 50%, y compris au retour et après recalcul. Timings et amplitudes inchangés.
+
+## 0.5.3 — bascule sticky à 30%
+
+Décision Alex : remplacement du seuil 40% par 30% du parcours sticky, pour avancer le deuxième volet. Toutes les branches (scroll, retour, refresh, chargement) utilisent ce seuil. Timings et blocs fixes inchangés.
