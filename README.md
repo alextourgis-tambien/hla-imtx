@@ -76,3 +76,7 @@ Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démar
 - Portraits : `.red__img.is--1`, `.is--2`, `.is--3` se succèdent aux tiers du parcours `top 95%` → `bottom 30%`, fondus de 0,4 s et retour arrière. État dans `data-hla-red-frame`, avec CSS prioritaire car les interactions Webflow réécrivent les styles inline des images.
 - Vérifié sur copie locale du HTML actuel : étape 1 (0,7 / 1 / 0,2 / 0,5), étape 2 (0 / 1 / 0,3 / 1 / 1), retour étape 1, portraits 2 et 3 affichés seuls, tablette 820 × 1180 avec hauteur 2360 px, nettoyage des opacités au passage à 390 px.
 - Blocs Webflow et paramètre fixe v=0.2.0 inchangés.
+
+## 0.4.1 — PRAME ancré en haut
+
+`.prame__text` apparaît à son entrée dans la vue (`top 90%`) avec un scale 0 → 1, une opacité 0 → 1 et `transform-origin: 50% 0%` (haut-centre), durée 0,7 s. Remplace sa précédente translation verticale. Déploiement GitHub effectué ; la purge JavaScript reste en attente de la fin de la limitation CDN signalée pour 0.4.0.

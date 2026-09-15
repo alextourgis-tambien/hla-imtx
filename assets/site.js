@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.0', ready: false };
+  const app = { version: '0.4.1', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -116,6 +116,13 @@
     // Do not split the same content twice if future Webflow classes are nested.
     const targets = candidates.filter(el => !candidates.some(parent => parent !== el && parent.contains(el)));
     targets.forEach(el => {
+      if (el.matches('.prame__text')) {
+        gsap.fromTo(el, { scale: 0, opacity: 0, transformOrigin: '50% 0%' }, {
+          scale: 1, opacity: 1, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        });
+        return;
+      }
       if (!el.textContent.trim()) {
         gsap.from(el, { opacity: 0, y: 24, duration: 0.6, ease: 'power3.out',
           scrollTrigger: { trigger: el, start: 'top 90%', once: true },
