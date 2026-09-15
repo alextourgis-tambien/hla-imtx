@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.6', ready: false };
+  const app = { version: '0.4.7', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -219,8 +219,8 @@
           gsap.to(cells, { opacity: next === 0 ? 0.5 : 1, duration: 0.5, overwrite: 'auto' }),
           gsap.to(next === 0 ? second : first, { autoAlpha: 0, scale: 0, duration: 0.4, ease: 'power2.inOut' }),
           gsap.to(next === 0 ? first : second, {
-            autoAlpha: visible ? 1 : 0,
-            scale: visible ? 1 : 0, duration: 0.55, delay: switching ? 0.4 : 0, ease: 'power2.out',
+            autoAlpha: visible ? (next === 0 ? 0.7 : 1) : 0,
+            scale: visible ? 1 : 0, duration: 0.85, delay: switching ? 0.4 : 0, ease: 'power2.inOut',
             onComplete: () => {
               if (visible && stage === next) pulses[next].forEach(tween => tween.restart(true));
             },
@@ -234,7 +234,8 @@
         onRefresh: self => apply(self.progress >= 0.5 ? 1 : 0),
       });
       const visibility = ScrollTrigger.create({
-        trigger: section, start: 'top bottom', end: 'bottom top',
+        // Wait until the orb cluster itself is on screen, not just the section's top edge.
+        trigger: section, start: 'top 25%', end: 'bottom top',
         onToggle: self => {
           visible = self.isActive;
           if (visible) apply(phase.progress >= 0.5 ? 1 : 0, true);

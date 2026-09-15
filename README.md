@@ -104,3 +104,7 @@ Uniquement `.hla__logo` et `.hla__hla-logo` : déclenchement à `top 75%` au lie
 ## 0.4.6 — premiers orbes de 0 à 1
 
 Décision Alex : les premiers orbes atteignent désormais 100% d’opacité (remplace les 70% précédents) et scale 1 à l’entrée du sticky. À 50% du parcours sticky, leur battement s’arrête et ils passent à scale 0, opacité 0 et visibilité masquée avant l’entrée des bis. Hors écran, les deux groupes sont remis à zéro pour rejouer l’entrée lors d’une nouvelle visite.
+
+## 0.4.7 — apparition des orbes réellement visible
+
+Correction Alex : premiers orbes à 70% d’opacité, bis à 100%. Déclenchement reporté de `top bottom` à `top 25%` pour que les orbes, placés vers le milieu du visuel, soient dans l’écran pendant leur entrée. Scale 0 → 1 et opacité sur 0,85 s, easing power2.inOut. Seuil de remplacement à 50% inchangé. Test navigateur : avant le seuil, quatre opacités/échelles à zéro ; après franchissement, valeurs intermédiaires observées (opacité 0,0562, scale 0,0803), puis 0,7 et battements. Blocs fixes inchangés.
