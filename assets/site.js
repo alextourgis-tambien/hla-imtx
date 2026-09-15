@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.3.1', ready: false };
+  const app = { version: '0.3.2', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -116,7 +116,7 @@
     targets.forEach(el => {
       if (!el.textContent.trim()) {
         gsap.from(el, { opacity: 0, y: 24, duration: 0.6, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 100%', once: true },
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         });
         return;
       }
@@ -131,7 +131,7 @@
           return gsap.from(self.lines, {
             opacity: 0, yPercent: 105, duration: 0.6, stagger: 0.08, ease: 'power3.out',
             onStart: () => { revealed = true; },
-            scrollTrigger: { trigger: el, start: 'top 100%', once: true },
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
           });
         },
       }));

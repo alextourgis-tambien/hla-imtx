@@ -60,3 +60,7 @@ Le CDN renvoie `max-age=604800` (sept jours). Une purge CDN ne vide pas le cache
 ## Ajustement 0.3.1 — animations plus précoces
 
 Déclenchement des animations au scroll dès `top 100%` au lieu de `top 85%`. Les tracés terminent à `bottom 75%` au lieu de `bottom 35%`, avec un lissage de 0,3 s. Textes : durée 0,6 s et décalage entre lignes 0,08 s. Fondus et apparition de PRAME : 0,6 s. Animation initiale du hero conservée. Blocs Webflow et paramètre `v=0.2.0` inchangés.
+
+## Ajustement 0.3.2 — affinage des textes
+
+Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démarrent à `top 90%` : compromis entre le réglage initial à 85% et le réglage trop précoce à 100%. Durée 0,6 s et décalage 0,08 s conservés. Tracés, fondus et introduction du hero inchangés.
