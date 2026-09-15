@@ -146,3 +146,7 @@ Sous 768 px uniquement : chaque `.hla__c-parent` apparaît de 0 à 100% en 0,55 
 ## 0.5.6 — chargement du hero sans masquage tardif
 
 Le header contient désormais un garde synchrone de visibilité avant le premier affichage ; il doit être ajouté dans Webflow (voir `webflow/intro-guard.html`, ou header complet). Les URLs, suffixe et footer ne changent pas. Le JS prépare GSAP avant de libérer ce garde. Si le garde n’est pas installé ou a déjà expiré, aucune animation d’introduction ne remasque les éléments déjà affichés. Le contenu est libéré en cas d’erreur et au bout de 12 s, même si le JS ne charge pas ; mouvement réduit respecté. Test navigateur sur copie Webflow : hero initialement masqué, puis trois éléments visibles à opacité 1 après initialisation. Syntaxe et diff vérifiés. L’ajout du garde dans le header Webflow reste nécessaire pour réactiver l’introduction sans flash.
+
+## Références éditables
+
+Coller les 27 références en HTML formaté dans un élément Rich Text Webflow de classe `references__richtext`. Les paragraphes, interligne et italiques sont stylés par le CSS existant, sans modification des embeds. Le texte reste directement éditable dans Webflow. Numéros explicites conservés pour ne pas renuméroter automatiquement les citations. Le fichier d’import local `references-hla.html` fournit un bouton de copie HTML avec sélection manuelle en secours. Bibliographie fournie, non vérifiée.

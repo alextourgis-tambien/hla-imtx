@@ -52,3 +52,9 @@ input[type="checkbox"].Checkbox:focus-visible {
 
 /* Anchor offset: edit this value to tune the landing position above the form. */
 #form { scroll-margin-top: 10rem; }
+
+/* Editable reference content in Webflow; scoped to this Rich Text only. */
+.references__richtext { line-height: 1.5; overflow-wrap: anywhere; }
+.references__richtext p { margin-top: 0; margin-bottom: 1.5em; line-height: inherit; }
+.references__richtext p:last-child { margin-bottom: 0; }
+.references__richtext em { font-family: inherit; font-weight: inherit; font-style: italic; }
