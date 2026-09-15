@@ -15,17 +15,3 @@
   }, 12000);
 })();
 </script>
-<script>
-(async function () {
-  try {
-    const url = 'https://raw.githubusercontent.com/alextourgis-tambien/hla-imtx/main/assets/site.css?v=0.2.0&refresh=' + Date.now();
-    const response = await fetch(url, { cache: 'no-store' });
-    if (!response.ok) throw new Error('CSS HTTP ' + response.status);
-    const style = document.createElement('style');
-    style.textContent = await response.text();
-    document.head.appendChild(style);
-  } catch (error) {
-    console.error('[HLA] Chargement CSS impossible', error);
-  }
-})();
-</script>

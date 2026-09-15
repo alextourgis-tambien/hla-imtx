@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.5', ready: false };
+  const app = { version: '0.5.6', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -375,16 +375,18 @@
   async function init() {
     formAnchorOffset();
     const hero = document.querySelector('.hero');
+    const introArmed = document.documentElement.classList.contains('hla-intro-loading');
+    const releaseIntro = () => document.documentElement.classList.remove('hla-intro-loading');
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      releaseIntro();
       app.ready = true;
       return;
     }
-    const hla = hero?.querySelectorAll('.hero__hla') || [];
-    const texts = hero?.querySelectorAll('.hero__text') || [];
-    const lineImages = document.querySelectorAll('.hero__line');
-    const pending = [...hla, ...texts, ...lineImages];
-    pending.forEach(el => el.classList.add('hla-hero-pending'));
-    let failSafe = setTimeout(() => pending.forEach(el => el.classList.remove('hla-hero-pending')), 12000);
+    const hla = introArmed ? hero?.querySelectorAll('.hero__hla') || [] : [];
+    const texts = introArmed ? hero?.querySelectorAll('.hero__text') || [] : [];
+    const lineImages = introArmed ? document.querySelectorAll('.hero__line') : [];
+    // Without the synchronous head gate, keep already-painted content visible.
+    // Never hide it retroactively while downloading the animation dependencies.
     try {
       await loadScript('gsap.min.js', 'gsap');
       await Promise.all([
@@ -394,8 +396,7 @@
       ]);
       const { gsap, ScrollTrigger, SplitText } = window;
       gsap.registerPlugin(ScrollTrigger, SplitText);
-      pending.forEach(el => el.classList.remove('hla-hero-pending'));
-      clearTimeout(failSafe);
+      const playIntro = introArmed && document.documentElement.classList.contains('hla-intro-loading');
       const lines = [...lineImages].map(inlineLine);
       const scrollLines = [...document.querySelectorAll(LINE_SELECTOR)].map(inlineScrollLine);
       const media = gsap.matchMedia();
@@ -404,8 +405,8 @@
         if (!context.conditions.motion) return;
         const splits = [];
         const intro = gsap.timeline();
-        if (hla.length) intro.from(hla, { opacity: 0, duration: 1.1, ease: 'power2.out' }, 0);
-        texts.forEach(text => {
+        if (playIntro && hla.length) intro.from(hla, { opacity: 0, duration: 1.1, ease: 'power2.out' }, 0);
+        (playIntro ? texts : []).forEach(text => {
           splits.push(SplitText.create(text, {
             type: 'lines', mask: 'lines', autoSplit: true,
             linesClass: 'hla-text-line',
@@ -418,7 +419,7 @@
             },
           }));
         });
-        lines.forEach(line => {
+        (playIntro ? lines : []).forEach(line => {
           const paths = line.querySelectorAll('path');
           if (paths.length) {
             paths.forEach(path => {
@@ -452,6 +453,8 @@
         const cleanupRed = redImageSequence(gsap, ScrollTrigger);
         return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };
       });
+      // All initial GSAP states are in place before revealing the hero.
+      releaseIntro();
       // Lazy-loaded images can change downstream trigger positions.
       document.querySelectorAll('img').forEach(image => {
         if (!image.complete) image.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
@@ -459,9 +462,8 @@
       ScrollTrigger.refresh();
       app.ready = true;
     } catch (error) {
-      clearTimeout(failSafe);
-      pending.forEach(el => el.classList.remove('hla-hero-pending'));
       app.media?.revert();
+      releaseIntro();
       app.ready = true;
       app.error = error.message;
       console.warn('[HLA IMTX] Animations unavailable; content remains visible.', error);
