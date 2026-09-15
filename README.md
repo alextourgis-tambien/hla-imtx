@@ -88,3 +88,7 @@ Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démar
 ## 0.4.3 — logo HLA
 
 Ajout de `.hla__hla-logo` aux fondus : opacité 0 → 1 à son entrée dans la vue, durée 0,6 s, une seule fois. Liens Webflow inchangés.
+
+## Blocs fixes — chargement direct GitHub
+
+Les blocs canoniques sont désormais `webflow/head.html` et `webflow/footer.html` : téléchargement direct depuis raw.githubusercontent.com avec `cache: no-store` et identifiant automatique de requête, puis injection du CSS et chargement du JavaScript via une URL Blob. Cela supprime la dépendance aux purges jsDelivr pour le code du projet ; GSAP reste chargé sur son URL CDN versionnée. Le paramètre v=0.2.0 et les blocs restent fixes pour les futures livraisons. Remplacer les anciens imports une fois, sans les conserver en doublon, puis republier Webflow. Vérification réussie dans le navigateur sur une copie de la page utilisant les vrais fichiers GitHub : sticky, portraits, PRAME scale, logo, SplitText et CSS présents ; aucune erreur observée. Si une politique CSP est ajoutée ultérieurement, autoriser le domaine GitHub pour fetch, les scripts blob et les styles injectés.
