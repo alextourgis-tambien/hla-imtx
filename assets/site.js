@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.8', ready: false };
+  const app = { version: '0.4.9', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -149,7 +149,7 @@
       if (matchMedia('(min-width: 768px)').matches && el.closest('.sticky')) return;
       const isLogo = el.matches('.hla__logo, .hla__hla-logo');
       gsap.fromTo(el, { opacity: 0 }, {
-        opacity: 1, duration: isLogo ? 1.1 : 0.6, ease: isLogo ? 'power1.inOut' : 'power2.out',
+        opacity: 1, duration: isLogo ? 0.55 : 0.6, ease: isLogo ? 'power1.out' : 'power2.out',
         scrollTrigger: { trigger: el, start: isLogo ? 'top 75%' : 'top 100%', once: true },
       });
     });
@@ -159,11 +159,12 @@
     document.querySelectorAll('.hla__c-parent').forEach(element => {
       let focused = null;
       gsap.set(element, { opacity: 0.2 });
+      const fadeTo = gsap.quickTo(element, 'opacity', { duration: 0.35, ease: 'power1.inOut' });
       const update = trigger => {
         const next = trigger.progress >= 0.4 && trigger.progress <= 0.6;
         if (focused === next) return;
         focused = next;
-        gsap.set(element, { opacity: next ? 1 : 0.2 });
+        fadeTo(next ? 1 : 0.2);
       };
       const trigger = ScrollTrigger.create({
         trigger: element, start: 'top bottom', end: 'bottom top',

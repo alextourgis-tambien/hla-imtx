@@ -112,3 +112,7 @@ Correction Alex : premiers orbes à 70% d’opacité, bis à 100%. Déclenchemen
 ## 0.4.8 — mise en avant des cinq blocs HLA
 
 Chaque `.hla__c-parent` possède sa propre progression `top bottom` → `bottom top` : opacité 0,2 avant 40%, 1 de 40% à 60% inclus, puis 0,2. Changements aux seuils, réversibles en remontant, recalculés au redimensionnement. Les cinq occurrences ont été vérifiées dans le HTML Webflow publié. Blocs fixes inchangés.
+
+## 0.4.9 — fondus affinés
+
+Transitions des `.hla__c-parent` entre 20% et 100% sur 0,35 s (power1.inOut), avec un tween réutilisé pour suivre les inversions rapides sans accumulation. Seuils 40% et 60% conservés. Les logos `.hla__logo` et `.hla__hla-logo` apparaissent désormais en 0,55 s au lieu de 1,1 s ; seuil `top 75%` conservé.
