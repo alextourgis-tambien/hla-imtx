@@ -3,7 +3,7 @@
 Base neuve pour les styles et animations du projet Webflow HLA IMTX.
 Le site, le CMS, les formulaires et les styles natifs restent dans Webflow.
 Ce dépôt contient uniquement le code personnalisé et ses blocs d'intégration.
-Aucun code du projet dupliqué n'est repris. Aucune animation n'est encore ajoutée.
+Aucun code du projet dupliqué n'est repris. Les animations du hero utilisent GSAP 3.15.0, ScrollTrigger et SplitText, chargés automatiquement par `site.js`.
 
 ## Installation
 
@@ -17,8 +17,8 @@ Conserver les ressources natives générées par Webflow. Ne pas ajouter les blo
 
 ## Fichiers
 
-- `assets/site.css` : emplacement réservé aux futurs styles, sans effet visuel initial.
-- `assets/site.js` : initialisation sans dépendance, après disponibilité du DOM, protégée contre les doublons.
+- `assets/site.css` : styles de préparation du hero et proportions du SVG.
+- `assets/site.js` : chargement GSAP et animations, après disponibilité du DOM, protégés contre les doublons.
 - `webflow/` : blocs prêts à copier.
 
 ## Livraison et cache
@@ -30,7 +30,10 @@ Pour une mise en production figée, remplacer `@main` dans les deux blocs par le
 
 ## Vérification
 
-Dans la console du navigateur après installation, `window.HLAIMTX` doit exposer `version: '0.1.0'` et `ready: true`.
-La première version n'ajoute aucune animation et ne change pas le rendu de la page.
+Dans la console du navigateur après installation, `window.HLAIMTX` doit exposer `version: '0.2.0'` et `ready: true`.
+Les orbes du hero se déplacent vers la gauche (12 vw, maximum 180 px) et le bas (22 vh, maximum 200 px), avec un scale de 1,08 lié au scroll. Le second orbe situé dans PRAME n'est pas ciblé.
+Le HLA apparaît en 1,1 s ; le texte commence à 0,25 s, ligne par ligne ; la ligne commence à 0,65 s et se trace en 1,8 s.
+Le SVG image identifié est remplacé par son tracé inline et son dégradé d'origine. Si l'image change, une révélation verticale sert de fallback.
+Avec la préférence système de réduction des mouvements, le contenu reste statique. SplitText recalcule les lignes aux changements de largeur et de polices. Si une dépendance échoue, les éléments restent visibles.
 Les futures animations devront respecter les préférences de réduction des mouvements, vérifier la présence des éléments et être vérifiées sur mobile.
 Ne jamais stocker de mot de passe, de clé ou de données de formulaires dans ce dépôt public.

@@ -1,4 +1,6 @@
-/* HLA IMTX — custom styles.
- * Intentionally empty until the requested visual effects are specified.
- * Webflow remains responsible for the site's existing layout and styling.
- */
+/* Added only by JS while dependencies load; removed on failure or timeout. */
+.hla-hero-pending { opacity: 0 !important; }
+svg.hero__line { aspect-ratio: 223 / 1222; }
+@media (prefers-reduced-motion: reduce) {
+  .hla-hero-pending { opacity: 1 !important; }
+}
