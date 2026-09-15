@@ -100,3 +100,7 @@ Chaque orbe utilise désormais son propre tween : amplitudes 1,14 à 1,20, demi-
 ## 0.4.5 — fondus des logos plus visibles
 
 Uniquement `.hla__logo` et `.hla__hla-logo` : déclenchement à `top 75%` au lieu de `top 100%`, fondu 1,1 s avec `power1.inOut`. Les autres fondus conservent leurs réglages. Blocs fixes inchangés.
+
+## 0.4.6 — premiers orbes de 0 à 1
+
+Décision Alex : les premiers orbes atteignent désormais 100% d’opacité (remplace les 70% précédents) et scale 1 à l’entrée du sticky. À 50% du parcours sticky, leur battement s’arrête et ils passent à scale 0, opacité 0 et visibilité masquée avant l’entrée des bis. Hors écran, les deux groupes sont remis à zéro pour rejouer l’entrée lors d’une nouvelle visite.
