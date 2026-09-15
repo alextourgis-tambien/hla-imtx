@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.3', ready: false };
+  const app = { version: '0.4.4', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -192,29 +192,36 @@
       const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo].map(el => [el, el.getAttribute('style')]);
       let stage = -1, visible = false;
       let transitions = [];
-      gsap.set([...first, ...second], { opacity: 0, scale: 0.7, transformOrigin: 'center center' });
+      gsap.set([...first, ...second], { autoAlpha: 0, scale: 0, transformOrigin: 'center center' });
       gsap.set(groupOne, { opacity: 1 });
       gsap.set(groupTwo, { opacity: 0.2 });
       gsap.set(cells, { opacity: 0.5 });
-      const pulses = [first, second].map(orbs => gsap.fromTo(orbs, { scale: 1 }, {
-        scale: 1.07, duration: 1.15, ease: 'sine.inOut', repeat: -1, yoyo: true,
-        paused: true, immediateRender: false,
-      }));
+      // Separate tweens give every orb its own amplitude, period and phase.
+      const amplitudes = [1.16, 1.20, 1.14, 1.18];
+      const durations = [1.0, 1.3, 1.15, 1.45];
+      const delays = [0, 0.2, 0.45, 0.1];
+      const pulses = [first, second].map(orbs => orbs.map((orb, index) => gsap.fromTo(orb, { scale: 1 }, {
+        scale: amplitudes[index % 4], duration: durations[index % 4], delay: delays[index % 4],
+        ease: 'sine.inOut', repeat: -1, yoyo: true, paused: true, immediateRender: false,
+      })));
       function apply(next, force = false) {
         if (!force && stage === next) return;
+        const switching = stage !== -1 && stage !== next;
         stage = next;
         section.dataset.hlaStickyStage = String(next + 1);
         transitions.forEach(tween => tween.kill());
-        pulses.forEach(tween => tween.pause());
+        pulses.flat().forEach(tween => tween.pause());
         transitions = [
           gsap.to(groupOne, { opacity: next === 0 ? 1 : 0.3, duration: 0.5, overwrite: 'auto' }),
           gsap.to(groupTwo, { opacity: next === 0 ? 0.2 : 1, duration: 0.5, overwrite: 'auto' }),
           gsap.to(cells, { opacity: next === 0 ? 0.5 : 1, duration: 0.5, overwrite: 'auto' }),
-          gsap.to(next === 0 ? second : first, { opacity: 0, scale: 0.45, duration: 0.45, ease: 'power2.in' }),
+          gsap.to(next === 0 ? second : first, { autoAlpha: 0, scale: 0, duration: 0.4, ease: 'power2.inOut' }),
           gsap.to(next === 0 ? first : second, {
-            opacity: visible ? (next === 0 ? 0.7 : 1) : 0,
-            scale: visible ? 1 : 0.7, duration: 0.55, ease: 'power2.out',
-            onComplete: () => { if (visible && stage === next) pulses[next].restart(); },
+            autoAlpha: visible ? (next === 0 ? 0.7 : 1) : 0,
+            scale: visible ? 1 : 0, duration: 0.55, delay: switching ? 0.4 : 0, ease: 'power2.out',
+            onComplete: () => {
+              if (visible && stage === next) pulses[next].forEach(tween => tween.restart(true));
+            },
           }),
         ];
       }
@@ -229,14 +236,14 @@
         onToggle: self => {
           visible = self.isActive;
           if (visible) apply(phase.progress >= 0.5 ? 1 : 0, true);
-          else pulses.forEach(tween => tween.pause());
+          else pulses.flat().forEach(tween => tween.pause());
         },
       });
       visible = visibility.isActive;
       apply(phase.progress >= 0.5 ? 1 : 0, true);
       cleanups.push(() => {
         phase.kill(); visibility.kill();
-        transitions.forEach(tween => tween.kill()); pulses.forEach(tween => tween.kill());
+        transitions.forEach(tween => tween.kill()); pulses.flat().forEach(tween => tween.kill());
         saved.forEach(([el, style]) => style === null ? el.removeAttribute('style') : el.setAttribute('style', style));
         delete section.dataset.hlaStickyStage;
       });

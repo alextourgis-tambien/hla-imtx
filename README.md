@@ -92,3 +92,7 @@ Ajout de `.hla__hla-logo` aux fondus : opacité 0 → 1 à son entrée dans la v
 ## Blocs fixes — chargement direct GitHub
 
 Les blocs canoniques sont désormais `webflow/head.html` et `webflow/footer.html` : téléchargement direct depuis raw.githubusercontent.com avec `cache: no-store` et identifiant automatique de requête, puis injection du CSS et chargement du JavaScript via une URL Blob. Cela supprime la dépendance aux purges jsDelivr pour le code du projet ; GSAP reste chargé sur son URL CDN versionnée. Le paramètre v=0.2.0 et les blocs restent fixes pour les futures livraisons. Remplacer les anciens imports une fois, sans les conserver en doublon, puis republier Webflow. Vérification réussie dans le navigateur sur une copie de la page utilisant les vrais fichiers GitHub : sticky, portraits, PRAME scale, logo, SplitText et CSS présents ; aucune erreur observée. Si une politique CSP est ajoutée ultérieurement, autoriser le domaine GitHub pour fetch, les scripts blob et les styles injectés.
+
+## 0.4.4 — battements asynchrones et remplacement lisible
+
+Chaque orbe utilise désormais son propre tween : amplitudes 1,14 à 1,20, demi-périodes 1 à 1,45 s et départs décalés. À la bascule, le groupe sortant atteint scale 0, opacité 0 et visibility hidden en 0,4 s ; le groupe entrant démarre ensuite. Battements sortants arrêtés avant réduction. Vérification navigateur : échelles différentes dans chaque groupe, quatre orbes sortants masqués à scale 0, quatre bis visibles à opacité 1 et échelles différentes ; aucune erreur. Blocs fixes inchangés.
