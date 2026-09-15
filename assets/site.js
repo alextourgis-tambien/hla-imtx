@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.7', ready: false };
+  const app = { version: '0.4.8', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -152,6 +152,24 @@
         opacity: 1, duration: isLogo ? 1.1 : 0.6, ease: isLogo ? 'power1.inOut' : 'power2.out',
         scrollTrigger: { trigger: el, start: isLogo ? 'top 75%' : 'top 100%', once: true },
       });
+    });
+  }
+
+  function hlaContentFocus(gsap, ScrollTrigger) {
+    document.querySelectorAll('.hla__c-parent').forEach(element => {
+      let focused = null;
+      gsap.set(element, { opacity: 0.2 });
+      const update = trigger => {
+        const next = trigger.progress >= 0.4 && trigger.progress <= 0.6;
+        if (focused === next) return;
+        focused = next;
+        gsap.set(element, { opacity: next ? 1 : 0.2 });
+      };
+      const trigger = ScrollTrigger.create({
+        trigger: element, start: 'top bottom', end: 'bottom top',
+        invalidateOnRefresh: true, onUpdate: update, onRefresh: update,
+      });
+      update(trigger);
     });
   }
 
@@ -352,6 +370,7 @@
         });
         scrollAnimations(gsap, SplitText, scrollLines, splits);
         driftingOrbs(gsap);
+        hlaContentFocus(gsap, ScrollTrigger);
         const cleanupSticky = context.conditions.desktop ? stickyAnimations(gsap, ScrollTrigger) : () => {};
         const cleanupRed = redImageSequence(gsap, ScrollTrigger);
         return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };
