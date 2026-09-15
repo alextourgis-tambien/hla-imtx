@@ -4,3 +4,13 @@ svg.hero__line { aspect-ratio: 223 / 1222; }
 @media (prefers-reduced-motion: reduce) {
   .hla-hero-pending { opacity: 1 !important; }
 }
+
+/* Preserve Webflow's global image sizing after replacing decorative SVG images.
+ * Zero specificity lets the original class and breakpoint rules keep priority. */
+:where(svg[data-hla-scroll-svg]) {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}

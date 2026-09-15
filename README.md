@@ -41,3 +41,14 @@ Ne jamais stocker de mot de passe, de clé ou de données de formulaires dans ce
 ## Liens fixes — décision Alex
 
 Conserver le suffixe `?v=0.2.0` dans les deux blocs Webflow, y compris après les prochaines versions du code. Ce suffixe est fixe et ne représente plus la version du JavaScript. Purger le cache CDN après chaque publication ; le cache local du navigateur peut nécessiter un rechargement forcé. Ne pas demander de remplacer les blocs à chaque livraison.
+
+## Animations au scroll — 0.3.0
+
+- Tracé lié au scroll (`scrub: 0.6`), de `top 85%` à `bottom 35%` : `.line__red`, `.road__line`, `.road__line-red`, `.roadmap__line`, `.prame__line`, `.test__line-top`, `.test__line-down`.
+- Les SVG originaux sont intégrés au script avec des identifiants de dégradés uniques. Leur sens de tracé est déterminé par leurs extrémités pour dessiner du haut vers le bas. Les variantes desktop/mobile conservent leurs classes Webflow.
+- Apparition à l'entrée dans l'écran, une fois, avec SplitText : `.heading__big`, `.p__big`, `.stats`, `.substats`, `.heading__bxl`, `.p__medium`, `.sticky__title`, `.prame__stats-title`, `.p__medium-bis`, `.test__heading`.
+- `.prame__text` étant une image dans Webflow, elle apparaît en bloc avec opacité et translation légère. Pour plusieurs lignes indépendantes, remplacer cette image par du texte HTML.
+- Fondu 0 → 1 : `.number__wrapper`, `.hla__logo`.
+- Les textes recalculent leurs lignes au redimensionnement ; les éléments déjà révélés restent visibles. Les doublons et cibles imbriquées ne sont pas divisés deux fois.
+- Contrôles effectués sur une copie locale authentifiée du HTML Webflow : états initiaux/finaux, tracés inversés, premier titre révélé, fin de page sans texte masqué, fondus terminés, adaptation à 390 px, proportions SVG et identifiants uniques. Erreurs tierces Turnstile observées sur localhost, sans erreur du code d'animation.
+- Les liens et le suffixe `?v=0.2.0` restent inchangés.

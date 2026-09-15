@@ -1,8 +1,8 @@
-/* HLA IMTX — hero animations. Dependencies load here; Webflow embeds stay unchanged. */
+/* HLA IMTX — hero and scroll animations. Dependencies load here; Webflow embeds stay unchanged. */
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.2.0', ready: false };
+  const app = { version: '0.3.0', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -45,14 +45,112 @@
     return svg;
   }
 
+
+  const LINE_SELECTOR = '.line__red, .road__line, .road__line-red, .roadmap__line, .prame__line, .test__line-top, .test__line-down';
+  const TEXT_SELECTOR = '.heading__big, .p__big, .stats, .substats, .heading__bxl, .p__medium, .sticky__title, .prame__text, .prame__stats-title, .p__medium-bis, .test__heading';
+  const FADE_SELECTOR = '.number__wrapper, .hla__logo';
+  // Verified original Webflow assets; no runtime SVG request or untrusted markup.
+  const LINE_ASSETS = {"6aa916889d83bf115f3fa0a6_Line%2026.svg": "<svg width=\"1079\" height=\"810\" viewBox=\"0 0 1079 810\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.00009 810C4.00008 485.084 4.00011 235 4.00011 235C4.00011 185 32 173 75 173C118 173 946.999 173 1013 173C1079 173 1074 125 1074 95L1074 -3.78333e-09\" stroke=\"url(#paint0_linear_1056_7)\" stroke-width=\"8\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1056_7\" x1=\"23.5004\" y1=\"1401.16\" x2=\"23.5004\" y2=\"1664\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#A2B3E2\"/>\n<stop offset=\"1\" stop-color=\"#A2B3E2\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa915ba58305f81ee6a7822_lineline.svg": "<svg width=\"639\" height=\"810\" viewBox=\"0 0 639 810\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.00009 810C4.00008 485.084 4.00005 235 4.00005 235C4.00005 185 32 173 75 173C118 173 506.999 173 572.999 173C638.999 173 633.999 125 633.999 95L633.999 -3.78335e-09\" stroke=\"url(#paint0_linear_1056_7)\" stroke-width=\"8\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1056_7\" x1=\"23.5004\" y1=\"1401.16\" x2=\"23.5004\" y2=\"1664\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#A2B3E2\"/>\n<stop offset=\"1\" stop-color=\"#A2B3E2\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa91354731c1bcd53656990_67ee19b41f4b26ae667824850d5d4fb2_Line%2018.svg": "<svg width=\"8\" height=\"1179\" viewBox=\"0 0 8 1179\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<line x1=\"3.57636\" y1=\"-1.56328e-07\" x2=\"3.57641\" y2=\"1179\" stroke=\"url(#paint0_linear_1056_5)\" stroke-width=\"7.15272\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1056_5\" x1=\"-0.499994\" y1=\"962.144\" x2=\"-0.499966\" y2=\"1179\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#A2B3E2\"/>\n<stop offset=\"1\" stop-color=\"#A2B3E2\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa913541f1bf02a89904260_Vector%208.svg": "<svg width=\"223\" height=\"634\" viewBox=\"0 0 223 634\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M219 622.257C219 615.297 219 690.706 219 524.493C219 316.726 4 302.696 4 160.705V0\" stroke=\"url(#paint0_linear_1056_6)\" stroke-width=\"8\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1056_6\" x1=\"111.5\" y1=\"-67.3781\" x2=\"111.5\" y2=\"633\" gradientUnits=\"userSpaceOnUse\">\n<stop offset=\"0.1\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n<stop offset=\"0.25\" stop-color=\"#F80001\"/>\n<stop offset=\"0.85\" stop-color=\"#F80001\"/>\n<stop offset=\"1\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa7cdd37c6fd66c86f97b11_Vector%206.svg": "<svg width=\"8\" height=\"372\" viewBox=\"0 0 8 372\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4 0L3.99998 372\" stroke=\"url(#paint0_linear_1034_53)\" stroke-width=\"8\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1034_53\" x1=\"-221.5\" y1=\"-16.3517\" x2=\"-221.5\" y2=\"372\" gradientUnits=\"userSpaceOnUse\">\n<stop offset=\"0.00411971\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n<stop offset=\"0.284211\" stop-color=\"#F80001\"/>\n<stop offset=\"0.768421\" stop-color=\"#F80001\"/>\n<stop offset=\"1\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa8f462ad74b0bd71f04c7f_80421202a09a858e74cb62a1f74d4f78_Vector%208.svg": "<svg width=\"9\" height=\"770\" viewBox=\"0 0 9 770\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.45312 0L4.45316 770\" stroke=\"url(#paint0_linear_1054_2)\" stroke-width=\"8.90572\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1054_2\" x1=\"-221.047\" y1=\"-33.8461\" x2=\"-221.047\" y2=\"770\" gradientUnits=\"userSpaceOnUse\">\n<stop offset=\"0.00411971\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n<stop offset=\"0.284211\" stop-color=\"#F80001\"/>\n<stop offset=\"0.768421\" stop-color=\"#F80001\"/>\n<stop offset=\"1\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n", "6aa7cdd314616b12a1c41548_Vector%209.svg": "<svg width=\"169\" height=\"456\" viewBox=\"0 0 169 456\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M4.00002 456C4.00002 441 4.00002 419.4 4.00002 397C4.00002 369 9.99997 341 59.0009 341C99.0009 341 26.999 341 91 341C165.001 341 165.001 286 165.001 262L165.001 -7.03759e-06\" stroke=\"url(#paint0_linear_1034_61)\" stroke-width=\"8\"/>\n<defs>\n<linearGradient id=\"paint0_linear_1034_61\" x1=\"272.5\" y1=\"0\" x2=\"272.5\" y2=\"456\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#F80001\" stop-opacity=\"0\"/>\n<stop offset=\"0.20614\" stop-color=\"#F80001\"/>\n<stop offset=\"0.872807\" stop-color=\"#F80001\"/>\n<stop offset=\"1\" stop-color=\"#F80001\" stop-opacity=\"0\"/>\n</linearGradient>\n</defs>\n</svg>\n"};
+
+  function inlineScrollLine(image, index) {
+    if (image.tagName !== 'IMG') return image;
+    const source = LINE_ASSETS[image.src.split('/').pop()];
+    if (!source) return image;
+    const svg = new DOMParser().parseFromString(source, 'image/svg+xml').documentElement;
+    // Let Webflow CSS and the viewBox set responsive dimensions, not SVG attributes.
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    const ids = new Map();
+    svg.querySelectorAll('[id]').forEach(el => {
+      const oldId = el.id;
+      const newId = `hla-scroll-${index}-${oldId}`;
+      ids.set(oldId, newId);
+      el.id = newId;
+    });
+    svg.querySelectorAll('*').forEach(el => {
+      for (const attr of [...el.attributes]) {
+        let value = attr.value;
+        ids.forEach((next, previous) => { value = value.replaceAll(`url(#${previous})`, `url(#${next})`); });
+        if (value !== attr.value) el.setAttribute(attr.name, value);
+      }
+    });
+    for (const attr of image.attributes) {
+      if (['class', 'style', 'id'].includes(attr.name)) svg.setAttribute(attr.name, attr.value);
+    }
+    svg.setAttribute('data-hla-scroll-svg', '');
+    const box = svg.getAttribute('viewBox').split(/\s+/).map(Number);
+    svg.style.aspectRatio = `${box[2]} / ${box[3]}`;
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    image.replaceWith(svg);
+    return svg;
+  }
+
+  function scrollAnimations(gsap, SplitText, scrollLines, splits) {
+    scrollLines.forEach(line => {
+      const paths = [...line.querySelectorAll('path, line, polyline')].filter(path => !path.closest('defs'));
+      const trigger = { trigger: line, start: 'top 85%', end: 'bottom 35%', scrub: 0.6, invalidateOnRefresh: true };
+      if (!paths.length) {
+        gsap.fromTo(line, { clipPath: 'inset(0 0 100% 0)' }, {
+          clipPath: 'inset(0 0 0% 0)', ease: 'none', scrollTrigger: trigger,
+        });
+        return;
+      }
+      const timeline = gsap.timeline({ scrollTrigger: trigger });
+      paths.forEach(path => {
+        const length = path.getTotalLength();
+        if (!length) return;
+        const first = path.getPointAtLength(0);
+        const last = path.getPointAtLength(length);
+        // Negative dash offset reveals from the end when the source starts below it.
+        const offset = first.y > last.y ? -length : length;
+        timeline.fromTo(path, { strokeDasharray: `${length} ${length}`, strokeDashoffset: offset }, {
+          strokeDashoffset: 0, ease: 'none', duration: 1,
+        }, 0);
+      });
+    });
+
+    const candidates = [...document.querySelectorAll(TEXT_SELECTOR)];
+    // Do not split the same content twice if future Webflow classes are nested.
+    const targets = candidates.filter(el => !candidates.some(parent => parent !== el && parent.contains(el)));
+    targets.forEach(el => {
+      if (!el.textContent.trim()) {
+        gsap.from(el, { opacity: 0, y: 24, duration: 0.85, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        });
+        return;
+      }
+      let revealed = false;
+      splits.push(SplitText.create(el, {
+        type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'hla-scroll-text-line',
+        onSplit(self) {
+          if (revealed) {
+            gsap.set(self.lines, { opacity: 1, yPercent: 0 });
+            return;
+          }
+          return gsap.from(self.lines, {
+            opacity: 0, yPercent: 105, duration: 0.85, stagger: 0.12, ease: 'power3.out',
+            onStart: () => { revealed = true; },
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          });
+        },
+      }));
+    });
+    document.querySelectorAll(FADE_SELECTOR).forEach(el => {
+      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      });
+    });
+  }
+
   async function init() {
     const hero = document.querySelector('.hero');
-    if (!hero || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       app.ready = true;
       return;
     }
-    const hla = hero.querySelectorAll('.hero__hla');
-    const texts = hero.querySelectorAll('.hero__text');
+    const hla = hero?.querySelectorAll('.hero__hla') || [];
+    const texts = hero?.querySelectorAll('.hero__text') || [];
     const lineImages = document.querySelectorAll('.hero__line');
     const pending = [...hla, ...texts, ...lineImages];
     pending.forEach(el => el.classList.add('hla-hero-pending'));
@@ -69,6 +167,7 @@
       pending.forEach(el => el.classList.remove('hla-hero-pending'));
       clearTimeout(failSafe);
       const lines = [...lineImages].map(inlineLine);
+      const scrollLines = [...document.querySelectorAll(LINE_SELECTOR)].map(inlineScrollLine);
       const media = gsap.matchMedia();
       app.media = media;
       media.add('(prefers-reduced-motion: no-preference)', () => {
@@ -104,7 +203,7 @@
             }, 0.65);
           }
         });
-        const orbs = hero.querySelectorAll('.hero__orbs');
+        const orbs = hero?.querySelectorAll('.hero__orbs') || [];
         if (orbs.length) gsap.to(orbs, {
           x: () => -Math.min(innerWidth * 0.12, 180),
           y: () => Math.min(innerHeight * 0.22, 200),
@@ -114,7 +213,12 @@
             scrub: 0.8, invalidateOnRefresh: true,
           },
         });
+        scrollAnimations(gsap, SplitText, scrollLines, splits);
         return () => splits.forEach(split => split.revert());
+      });
+      // Lazy-loaded images can change downstream trigger positions.
+      document.querySelectorAll('img').forEach(image => {
+        if (!image.complete) image.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
       });
       ScrollTrigger.refresh();
       app.ready = true;
