@@ -52,3 +52,7 @@ Conserver le suffixe `?v=0.2.0` dans les deux blocs Webflow, y compris après le
 - Les textes recalculent leurs lignes au redimensionnement ; les éléments déjà révélés restent visibles. Les doublons et cibles imbriquées ne sont pas divisés deux fois.
 - Contrôles effectués sur une copie locale authentifiée du HTML Webflow : états initiaux/finaux, tracés inversés, premier titre révélé, fin de page sans texte masqué, fondus terminés, adaptation à 390 px, proportions SVG et identifiants uniques. Erreurs tierces Turnstile observées sur localhost, sans erreur du code d'animation.
 - Les liens et le suffixe `?v=0.2.0` restent inchangés.
+
+## Correction du cache navigateur
+
+Le CDN renvoie `max-age=604800` (sept jours). Une purge CDN ne vide pas le cache local : le site pouvait encore exécuter 0.2.0 après publication de 0.3.0. Les blocs utilisent désormais un paramètre `refresh` calculé automatiquement à chaque chargement. Le paramètre utilisateur `v=0.2.0` reste fixe. Remplacer une fois les anciens blocs et republier Webflow ; ne pas conserver les anciens imports en doublon. La purge CDN reste requise après chaque livraison.
