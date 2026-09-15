@@ -14,3 +14,25 @@ svg.hero__line { aspect-ratio: 223 / 1222; }
   display: inline-block;
   vertical-align: middle;
 }
+
+/* Own the portrait sequence without competing with Webflow's inline opacity writes. */
+.red__wrapper-img[data-hla-red-frame] .red__img {
+  opacity: 0 !important;
+  transition: opacity 0.4s ease;
+}
+.red__wrapper-img[data-hla-red-frame="1"] .red__img.is--1,
+.red__wrapper-img[data-hla-red-frame="2"] .red__img.is--2,
+.red__wrapper-img[data-hla-red-frame="3"] .red__img.is--3 { opacity: 1 !important; }
+@media (min-width: 768px) {
+  .sticky { height: 200vh; }
+  .sticky__element { height: 100svh; position: sticky; top: 0; }
+}
+/* Keep a single pinned visual on tablet as well as desktop. */
+@media (min-width: 768px) and (max-width: 991px) {
+  .sticky__element { flex-direction: row; }
+  .sticky__img-wrapper.is--1 { display: flex; flex: 0 0 35%; width: 35%; height: auto; }
+  .sticky__img-wrapper.is--2, .sticky__img-wrapper.is--3 { display: none; }
+  .sticky__c-wrapper { min-width: 0; }
+  .sticky__c-parent { padding: 1.25rem; }
+  .sticky__c-wrapper > .sticky__c-parent:first-child { padding-top: 5rem; }
+}

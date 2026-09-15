@@ -64,3 +64,15 @@ Déclenchement des animations au scroll dès `top 100%` au lieu de `top 85%`. Le
 ## Ajustement 0.3.2 — affinage des textes
 
 Les apparitions de texte au scroll (et PRAME image, dans le même groupe) démarrent à `top 90%` : compromis entre le réglage initial à 85% et le réglage trop précoce à 100%. Durée 0,6 s et décalage 0,08 s conservés. Tracés, fondus et introduction du hero inchangés.
+
+## 0.4.0 — sticky et portraits
+
+- Desktop/tablette (≥ 768 px) : `.sticky` mesure 200 vh ; `.sticky__element` reste en sticky natif sur 100 svh.
+- Première étape dès l'entrée dans la vue : premiers orbes à 0,7 ; titres/paragraphe 1 à 1 ; titres/paragraphe 2 à 0,2 ; cellule à 0,5.
+- À 50 % du déplacement disponible pendant le maintien sticky (`top top` → `bottom bottom`) : premiers orbes réduits à 0,45 et masqués ; orbes bis à 1 ; groupe 1 à 0,3 ; groupe 2 et cellule à 1. Décision Alex : les orbes bis commencent à 50 %, en remplacement.
+- Battement continu de scale 1 à 1,07, arrêté hors écran. Changements réversibles au scroll arrière.
+- Les classes de groupe explicites is--1/is--2 sont prioritaires. À défaut, les deux groupes sont identifiés par les blocs contenant `.sticky__title`. Les apparitions génériques de ces textes et numéros sont désactivées sur desktop/tablette pour éviter les opacités cumulées.
+- En tablette, le visuel partagé est maintenu en colonne gauche ; les visuels mobiles séparés restent réservés au mobile. Le mobile conserve sa lecture linéaire.
+- Portraits : `.red__img.is--1`, `.is--2`, `.is--3` se succèdent aux tiers du parcours `top 95%` → `bottom 30%`, fondus de 0,4 s et retour arrière. État dans `data-hla-red-frame`, avec CSS prioritaire car les interactions Webflow réécrivent les styles inline des images.
+- Vérifié sur copie locale du HTML actuel : étape 1 (0,7 / 1 / 0,2 / 0,5), étape 2 (0 / 1 / 0,3 / 1 / 1), retour étape 1, portraits 2 et 3 affichés seuls, tablette 820 × 1180 avec hauteur 2360 px, nettoyage des opacités au passage à 390 px.
+- Blocs Webflow et paramètre fixe v=0.2.0 inchangés.

@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.3.2', ready: false };
+  const app = { version: '0.4.0', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -110,7 +110,9 @@
       });
     });
 
-    const candidates = [...document.querySelectorAll(TEXT_SELECTOR)];
+    const candidates = [...document.querySelectorAll(TEXT_SELECTOR)].filter(el =>
+      !(matchMedia('(min-width: 768px)').matches && el.closest('.sticky') && el.matches('.sticky__title, .p__medium'))
+    );
     // Do not split the same content twice if future Webflow classes are nested.
     const targets = candidates.filter(el => !candidates.some(parent => parent !== el && parent.contains(el)));
     targets.forEach(el => {
@@ -137,10 +139,105 @@
       }));
     });
     document.querySelectorAll(FADE_SELECTOR).forEach(el => {
+      if (matchMedia('(min-width: 768px)').matches && el.closest('.sticky')) return;
       gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out',
         scrollTrigger: { trigger: el, start: 'top 100%', once: true },
       });
     });
+  }
+
+  function stickyAnimations(gsap, ScrollTrigger) {
+    const cleanups = [];
+    document.querySelectorAll('.sticky').forEach(section => {
+      const visual = section.querySelector('.sticky__img-wrapper.is--1');
+      if (!visual) return;
+      const first = [...visual.querySelectorAll('.orbs.is--one, .orbs.is--two, .orbs.is--three, .orbs.is--four')];
+      const second = [...visual.querySelectorAll('.orbs.is--one-bis, .orbs.is--two-bis, .orbs.is--three-bis, .orbs.is--four-bis')];
+      const cells = visual.querySelectorAll('.cells__img');
+      const blocks = [...section.querySelectorAll('.sticky__c-parent')].filter(el => el.querySelector('.sticky__title'));
+      // Explicit combo classes take priority; published markup currently needs the structural fallback.
+      function group(index) {
+        const block = blocks[index - 1];
+        return [...new Set([
+          section.querySelector(`.sticky__title-wrapper.is--${index}`) || block?.querySelector('.sticky__title-wrapper'),
+          section.querySelector(`.p__medium.is--${index}`) || block?.querySelector('.p__medium'),
+        ].filter(Boolean))];
+      }
+      const groupOne = group(1), groupTwo = group(2);
+      const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo].map(el => [el, el.getAttribute('style')]);
+      let stage = -1, visible = false;
+      let transitions = [];
+      gsap.set([...first, ...second], { opacity: 0, scale: 0.7, transformOrigin: 'center center' });
+      gsap.set(groupOne, { opacity: 1 });
+      gsap.set(groupTwo, { opacity: 0.2 });
+      gsap.set(cells, { opacity: 0.5 });
+      const pulses = [first, second].map(orbs => gsap.fromTo(orbs, { scale: 1 }, {
+        scale: 1.07, duration: 1.15, ease: 'sine.inOut', repeat: -1, yoyo: true,
+        paused: true, immediateRender: false,
+      }));
+      function apply(next, force = false) {
+        if (!force && stage === next) return;
+        stage = next;
+        section.dataset.hlaStickyStage = String(next + 1);
+        transitions.forEach(tween => tween.kill());
+        pulses.forEach(tween => tween.pause());
+        transitions = [
+          gsap.to(groupOne, { opacity: next === 0 ? 1 : 0.3, duration: 0.5, overwrite: 'auto' }),
+          gsap.to(groupTwo, { opacity: next === 0 ? 0.2 : 1, duration: 0.5, overwrite: 'auto' }),
+          gsap.to(cells, { opacity: next === 0 ? 0.5 : 1, duration: 0.5, overwrite: 'auto' }),
+          gsap.to(next === 0 ? second : first, { opacity: 0, scale: 0.45, duration: 0.45, ease: 'power2.in' }),
+          gsap.to(next === 0 ? first : second, {
+            opacity: visible ? (next === 0 ? 0.7 : 1) : 0,
+            scale: visible ? 1 : 0.7, duration: 0.55, ease: 'power2.out',
+            onComplete: () => { if (visible && stage === next) pulses[next].restart(); },
+          }),
+        ];
+      }
+      // 50% of the available sticky travel: section height minus pinned viewport height.
+      const phase = ScrollTrigger.create({
+        trigger: section, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true,
+        onUpdate: self => apply(self.progress >= 0.5 ? 1 : 0),
+        onRefresh: self => apply(self.progress >= 0.5 ? 1 : 0),
+      });
+      const visibility = ScrollTrigger.create({
+        trigger: section, start: 'top bottom', end: 'bottom top',
+        onToggle: self => {
+          visible = self.isActive;
+          if (visible) apply(phase.progress >= 0.5 ? 1 : 0, true);
+          else pulses.forEach(tween => tween.pause());
+        },
+      });
+      visible = visibility.isActive;
+      apply(phase.progress >= 0.5 ? 1 : 0, true);
+      cleanups.push(() => {
+        phase.kill(); visibility.kill();
+        transitions.forEach(tween => tween.kill()); pulses.forEach(tween => tween.kill());
+        saved.forEach(([el, style]) => style === null ? el.removeAttribute('style') : el.setAttribute('style', style));
+        delete section.dataset.hlaStickyStage;
+      });
+    });
+    return () => cleanups.forEach(cleanup => cleanup());
+  }
+
+  function redImageSequence(gsap, ScrollTrigger) {
+    const cleanups = [];
+    document.querySelectorAll('.red__wrapper-img').forEach(wrapper => {
+      const images = [1, 2, 3].map(i => wrapper.querySelector(`.red__img.is--${i}`));
+      if (images.some(image => !image)) return;
+      images.forEach(image => { image.loading = 'eager'; });
+      // Webflow rewrites image style attributes: keep our state in a separate data attribute.
+      const update = self => {
+        wrapper.dataset.hlaRedFrame = String(self.progress < 0.33 ? 1 : self.progress < 0.66 ? 2 : 3);
+      };
+      wrapper.dataset.hlaRedFrame = '1';
+      const trigger = ScrollTrigger.create({
+        trigger: wrapper, start: 'top 95%', end: 'bottom 30%', invalidateOnRefresh: true,
+        onUpdate: update, onRefresh: update,
+      });
+      update(trigger);
+      cleanups.push(() => { trigger.kill(); delete wrapper.dataset.hlaRedFrame; });
+    });
+    return () => cleanups.forEach(cleanup => cleanup());
   }
 
   async function init() {
@@ -170,7 +267,8 @@
       const scrollLines = [...document.querySelectorAll(LINE_SELECTOR)].map(inlineScrollLine);
       const media = gsap.matchMedia();
       app.media = media;
-      media.add('(prefers-reduced-motion: no-preference)', () => {
+      media.add({ motion: '(prefers-reduced-motion: no-preference)', desktop: '(min-width: 768px)' }, context => {
+        if (!context.conditions.motion) return;
         const splits = [];
         const intro = gsap.timeline();
         if (hla.length) intro.from(hla, { opacity: 0, duration: 1.1, ease: 'power2.out' }, 0);
@@ -214,7 +312,9 @@
           },
         });
         scrollAnimations(gsap, SplitText, scrollLines, splits);
-        return () => splits.forEach(split => split.revert());
+        const cleanupSticky = context.conditions.desktop ? stickyAnimations(gsap, ScrollTrigger) : () => {};
+        const cleanupRed = redImageSequence(gsap, ScrollTrigger);
+        return () => { cleanupSticky(); cleanupRed(); splits.forEach(split => split.revert()); };
       });
       // Lazy-loaded images can change downstream trigger positions.
       document.querySelectorAll('img').forEach(image => {
