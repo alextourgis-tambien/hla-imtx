@@ -37,3 +37,7 @@ Le SVG image identifié est remplacé par son tracé inline et son dégradé d'o
 Avec la préférence système de réduction des mouvements, le contenu reste statique. SplitText recalcule les lignes aux changements de largeur et de polices. Si une dépendance échoue, les éléments restent visibles.
 Les futures animations devront respecter les préférences de réduction des mouvements, vérifier la présence des éléments et être vérifiées sur mobile.
 Ne jamais stocker de mot de passe, de clé ou de données de formulaires dans ce dépôt public.
+
+## Liens fixes — décision Alex
+
+Conserver le suffixe `?v=0.2.0` dans les deux blocs Webflow, y compris après les prochaines versions du code. Ce suffixe est fixe et ne représente plus la version du JavaScript. Purger le cache CDN après chaque publication ; le cache local du navigateur peut nécessiter un rechargement forcé. Ne pas demander de remplacer les blocs à chaque livraison.
