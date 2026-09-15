@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.0', ready: false };
+  const app = { version: '0.5.1', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -171,9 +171,10 @@
         const logoRect = logo.getBoundingClientRect();
         const referenceY = logoRect.top + logoRect.height / 2;
         const logoVisible = logoRect.height > 0 && referenceY > 0 && referenceY < innerHeight;
+        const focusMargin = Math.min(innerHeight * 0.15, 160);
         const changes = states.map(state => {
           const rect = state.element.getBoundingClientRect();
-          return { state, focused: logoVisible && rect.top <= referenceY && rect.bottom >= referenceY };
+          return { state, focused: logoVisible && rect.top <= referenceY + focusMargin && rect.bottom >= referenceY - focusMargin };
         });
         changes.forEach(({ state, focused }) => {
           if (state.focused === focused) return;
