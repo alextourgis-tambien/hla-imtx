@@ -134,3 +134,7 @@ Le remplacement des orbes et le changement des opacités des textes et de la cel
 ## 0.5.3 — bascule sticky à 30%
 
 Décision Alex : remplacement du seuil 40% par 30% du parcours sticky, pour avancer le deuxième volet. Toutes les branches (scroll, retour, refresh, chargement) utilisent ce seuil. Timings et blocs fixes inchangés.
+
+## 0.5.4 — arrivée du bouton au formulaire
+
+Les liens `.button__main` vers `#form` s’arrêtent 10 rem au-dessus du formulaire. La valeur se règle dans `#form { scroll-margin-top: 10rem; }`. Défilement sur 0,9 s, position de layout recalculée pendant le trajet, interruption par défilement manuel, arrivée immédiate si mouvement réduit. Le gestionnaire évite que le smooth scroll Webflow écrase le décalage. Test navigateur sur copie du HTML publié avec scripts Webflow conservés : arrivée à 215,625 px du haut pour une marge calculée de 215,9 px (10 rem). Embeds inchangés.

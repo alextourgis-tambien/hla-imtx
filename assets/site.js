@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.3', ready: false };
+  const app = { version: '0.5.4', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -311,7 +311,52 @@
     return () => cleanups.forEach(cleanup => cleanup());
   }
 
+  function formAnchorOffset() {
+    let frame = 0;
+    const cancel = () => { cancelAnimationFrame(frame); frame = 0; };
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('touchstart', cancel, { passive: true });
+    window.addEventListener('keydown', event => {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) cancel();
+    });
+    document.addEventListener('click', event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target.closest?.('a.button__main');
+      if (!link || link.target === '_blank') return;
+      const url = new URL(link.href, location.href);
+      if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search || url.hash !== '#form') return;
+      const target = document.getElementById('form');
+      if (!target) return;
+      event.preventDefault();
+      // Webflow has its own anchor scrolling; prevent it from overriding our offset.
+      event.stopImmediatePropagation();
+      const destination = () => {
+        let layoutTop = 0;
+        for (let node = target; node; node = node.offsetParent) layoutTop += node.offsetTop;
+        const offset = parseFloat(getComputedStyle(target).scrollMarginTop) || 10 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        return Math.max(0, layoutTop - offset);
+      };
+      if (location.hash !== '#form') history.pushState(null, '', url.hash);
+      cancel();
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo({ top: destination(), behavior: 'instant' });
+        return;
+      }
+      // Native smooth scrolling is interrupted by Webflow/ScrollTrigger refreshes as images load.
+      // Track layout during the short animation so parallax and lazy images cannot change the landing.
+      const startY = scrollY, started = performance.now();
+      const tick = now => {
+        const progress = Math.min(1, (now - started) / 900);
+        const eased = progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2;
+        window.scrollTo({ top: startY + (destination() - startY) * eased, behavior: 'instant' });
+        frame = progress < 1 ? requestAnimationFrame(tick) : 0;
+      };
+      frame = requestAnimationFrame(tick);
+    }, true);
+  }
+
   async function init() {
+    formAnchorOffset();
     const hero = document.querySelector('.hero');
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       app.ready = true;

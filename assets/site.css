@@ -54,3 +54,6 @@ input[type="checkbox"].Checkbox:focus-visible {
   outline: 2px solid white;
   outline-offset: 3px;
 }
+
+/* Anchor offset: edit this value to tune the landing position above the form. */
+#form { scroll-margin-top: 10rem; }
