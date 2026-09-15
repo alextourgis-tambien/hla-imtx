@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.4.4', ready: false };
+  const app = { version: '0.4.5', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -147,8 +147,10 @@
     });
     document.querySelectorAll(FADE_SELECTOR).forEach(el => {
       if (matchMedia('(min-width: 768px)').matches && el.closest('.sticky')) return;
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 100%', once: true },
+      const isLogo = el.matches('.hla__logo, .hla__hla-logo');
+      gsap.fromTo(el, { opacity: 0 }, {
+        opacity: 1, duration: isLogo ? 1.1 : 0.6, ease: isLogo ? 'power1.inOut' : 'power2.out',
+        scrollTrigger: { trigger: el, start: isLogo ? 'top 75%' : 'top 100%', once: true },
       });
     });
   }

@@ -96,3 +96,7 @@ Les blocs canoniques sont désormais `webflow/head.html` et `webflow/footer.html
 ## 0.4.4 — battements asynchrones et remplacement lisible
 
 Chaque orbe utilise désormais son propre tween : amplitudes 1,14 à 1,20, demi-périodes 1 à 1,45 s et départs décalés. À la bascule, le groupe sortant atteint scale 0, opacité 0 et visibility hidden en 0,4 s ; le groupe entrant démarre ensuite. Battements sortants arrêtés avant réduction. Vérification navigateur : échelles différentes dans chaque groupe, quatre orbes sortants masqués à scale 0, quatre bis visibles à opacité 1 et échelles différentes ; aucune erreur. Blocs fixes inchangés.
+
+## 0.4.5 — fondus des logos plus visibles
+
+Uniquement `.hla__logo` et `.hla__hla-logo` : déclenchement à `top 75%` au lieu de `top 100%`, fondu 1,1 s avec `power1.inOut`. Les autres fondus conservent leurs réglages. Blocs fixes inchangés.
