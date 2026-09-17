@@ -181,3 +181,8 @@ Le numéro 1 a un fond #ED0001 dans la première phase et le numéro 2 un fond b
 ## 0.6.0 — couleur des chiffres et exposants
 
 Les `.sticky__number.is--one/is--two` deviennent blancs dans leur phase active ; leur couleur calculée initiale est restaurée dans l’autre phase. Transition synchronisée à 40%, fonds rouge/blanc existants conservés, nettoyage au changement de breakpoint. Les sup sont globalement alignés text-top, top zéro et line-height 1 avec priorité sur les décalages propres aux classes Webflow ; aucune taille de police imposée. Test navigateur : phase 1 blanc/bleu initial, phase 2 bleu initial/blanc ; tous les sup ont text-top/top zéro, tailles existantes conservées. Syntaxe/diff vérifiés.
+
+
+## Ajustement optique des exposants
+
+À la demande d’Alex, abaissement global des sup de 0,25em par rapport à text-top (environ 4px pour une taille de 0,8rem). Taille, interligne et logique sticky inchangés. Diff vérifié.

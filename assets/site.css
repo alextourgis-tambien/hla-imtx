@@ -81,9 +81,9 @@ input[type="checkbox"].Checkbox:focus-visible {
   clip-path: inset(-0.2em);
 }
 
-/* Align citations with the parent text's top; keep Webflow's font-size settings. */
+/* Optical adjustment below text-top; preserve Webflow's superscript sizes. */
 body sup {
   vertical-align: text-top !important;
-  top: 0 !important;
+  top: 0.25em !important;
   line-height: 1 !important;
 }
