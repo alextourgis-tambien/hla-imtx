@@ -190,3 +190,8 @@ Les `.sticky__number.is--one/is--two` deviennent blancs dans leur phase active ;
 ## 0.6.1 — alignement des exposants sur les capitales
 
 Remplace text-top et le décalage fixe 0,25em. Le JS mesure la hauteur visible du H dans la police du parent et celle du sup via Canvas TextMetrics ; la différence définit le relèvement de baseline. Les tops des capitales sont donc alignés malgré les tailles de titres et paragraphes différentes. Recalcul après chargement des polices, resize et reconstruction SplitText. Tailles Webflow conservées. Vérification navigateur sur grand titre et paragraphe, desktop et 390px : tous les sup mesurés, positions recalculées, rendu visuel contrôlé. Syntaxe et diff vérifiés.
+
+
+## 0.6.2 — mots rouges synchronisés aux blocs HLA
+
+Sur desktop/tablette, la timeline de focus commune anime à la fois l’opacité de `.hla__c-parent` (0,2 → 1) et la couleur de ses `.hla__p .hla-span__red` (blanc → #ED0001). Inversion au retrait du focus, durée 0,35 s, seuils existants conservés. Le contexte matchMedia restaure les styles d’origine sur mobile. Syntaxe et diff vérifiés. Embeds inchangés.

@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.6.1', ready: false };
+  const app = { version: '0.6.2', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -180,10 +180,11 @@
       const elements = [...wrapper.querySelectorAll('.hla__c-parent')];
       if (!logo || !elements.length) return;
       const states = elements.map(element => {
-        gsap.set(element, { opacity: 0.2 });
-        return { element, focused: null, fadeTo: gsap.quickTo(element, 'opacity', {
-          duration: 0.35, ease: 'power1.inOut',
-        }) };
+        const spans = element.querySelectorAll('.hla__p .hla-span__red');
+        const focusTween = gsap.timeline({ paused: true, defaults: { duration: 0.35, ease: 'power1.inOut' } });
+        focusTween.fromTo(element, { opacity: 0.2 }, { opacity: 1 }, 0);
+        if (spans.length) focusTween.fromTo(spans, { color: '#FFFFFF' }, { color: '#ED0001' }, 0);
+        return { element, focused: null, focusTween };
       });
       const update = () => {
         // Read the actual sticky logo position on every scroll, including its release at the end.
@@ -198,7 +199,8 @@
         changes.forEach(({ state, focused }) => {
           if (state.focused === focused) return;
           state.focused = focused;
-          state.fadeTo(focused ? 1 : 0.2);
+          if (focused) state.focusTween.play();
+          else state.focusTween.reverse();
         });
       };
       ScrollTrigger.create({ start: 0, end: 'max', onUpdate: update, onRefresh: update });
