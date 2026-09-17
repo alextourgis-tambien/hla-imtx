@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.6.0', ready: false };
+  const app = { version: '0.6.1', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -387,8 +387,37 @@
     }, true);
   }
 
+  function alignSuperscripts() {
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) return;
+    let frame = 0;
+    const capHeight = style => {
+      ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      return ctx.measureText('H').actualBoundingBoxAscent || parseFloat(style.fontSize) * 0.7;
+    };
+    const update = () => {
+      frame = 0;
+      // Align visible capital tops, rather than font ascender boxes (text-top).
+      // The rise follows the surrounding font size, not the fixed citation size.
+      const values = [...document.querySelectorAll('sup')].map(sup => {
+        const parent = getComputedStyle(sup.parentElement);
+        const own = getComputedStyle(sup);
+        return [sup, Math.max(0, capHeight(parent) - capHeight(own))];
+      });
+      values.forEach(([sup, rise]) => sup.style.setProperty('--hla-sup-rise', `${rise}px`));
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('resize', schedule, { passive: true });
+    document.fonts?.ready.then(schedule);
+    document.fonts?.addEventListener('loadingdone', schedule);
+    // SplitText can clone/rebuild superscripts on responsive line wrapping.
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+  }
+
   async function init() {
     formAnchorOffset();
+    alignSuperscripts();
     const hero = document.querySelector('.hero');
     const introArmed = document.documentElement.classList.contains('hla-intro-loading');
     const releaseIntro = () => document.documentElement.classList.remove('hla-intro-loading');

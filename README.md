@@ -186,3 +186,7 @@ Les `.sticky__number.is--one/is--two` deviennent blancs dans leur phase active ;
 ## Ajustement optique des exposants
 
 À la demande d’Alex, abaissement global des sup de 0,25em par rapport à text-top (environ 4px pour une taille de 0,8rem). Taille, interligne et logique sticky inchangés. Diff vérifié.
+
+## 0.6.1 — alignement des exposants sur les capitales
+
+Remplace text-top et le décalage fixe 0,25em. Le JS mesure la hauteur visible du H dans la police du parent et celle du sup via Canvas TextMetrics ; la différence définit le relèvement de baseline. Les tops des capitales sont donc alignés malgré les tailles de titres et paragraphes différentes. Recalcul après chargement des polices, resize et reconstruction SplitText. Tailles Webflow conservées. Vérification navigateur sur grand titre et paragraphe, desktop et 390px : tous les sup mesurés, positions recalculées, rendu visuel contrôlé. Syntaxe et diff vérifiés.

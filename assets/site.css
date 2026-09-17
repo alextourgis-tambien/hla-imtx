@@ -81,9 +81,9 @@ input[type="checkbox"].Checkbox:focus-visible {
   clip-path: inset(-0.2em);
 }
 
-/* Optical adjustment below text-top; preserve Webflow's superscript sizes. */
+/* Cap-height alignment is measured by JS; keep all Webflow font sizes. */
 body sup {
-  vertical-align: text-top !important;
-  top: 0.25em !important;
-  line-height: 1 !important;
+  vertical-align: var(--hla-sup-rise, super) !important;
+  top: 0 !important;
+  line-height: 0 !important;
 }
