@@ -172,3 +172,8 @@ Suppression de la hauteur 200vh imposée par le CSS personnalisé sur desktop/ta
 ## 0.5.8 — descendantes des textes animés
 
 Les wrappers SplitText `overflow: clip` coupaient les p/g/y avec les interlignes serrés. Les deux familles de masques (hero et scroll) utilisent désormais overflow visible et un clip-path élargi de 0,2em sans modifier leur géométrie. À la fin de l’apparition, clip-path est retiré ; les lignes déjà révélées restent sans rognage après autoSplit. Vérification sur HTML préproduction du 17 septembre : titre signalé et corps lisibles desktop/mobile, hauteurs des neuf blocs mesurés identiques avant/après, tous les masques couverts (85 mobile, 57 tablette). Syntaxe JS/diff vérifiés. Embeds inchangés.
+
+
+## 0.5.9 — fonds des numéros sticky
+
+Le numéro 1 a un fond #ED0001 dans la première phase et le numéro 2 un fond blanc. À 40% du parcours, les couleurs s’inversent avec une transition 0,5 s, également en remontant. Sélecteurs is--1/is--2 prioritaires, repli sur les deux blocs existants. Styles restaurés au changement de breakpoint ; mobile inchangé. Syntaxe et diff vérifiés. Embeds inchangés.

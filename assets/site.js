@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.8', ready: false };
+  const app = { version: '0.5.9', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -242,7 +242,10 @@
         ].filter(Boolean))];
       }
       const groupOne = group(1), groupTwo = group(2);
-      const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo].map(el => [el, el.getAttribute('style')]);
+      const numberOne = section.querySelector('.number__wrapper.is--1') || blocks[0]?.querySelector('.number__wrapper');
+      const numberTwo = section.querySelector('.number__wrapper.is--2') || blocks[1]?.querySelector('.number__wrapper');
+      const numbers = [numberOne, numberTwo].filter(Boolean);
+      const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo, ...numbers].map(el => [el, el.getAttribute('style')]);
       let stage = -1, visible = false;
       let transitions = [];
       gsap.set([...first, ...second], { autoAlpha: 0, scale: 0, transformOrigin: 'center center' });
@@ -265,6 +268,10 @@
         transitions.forEach(tween => tween.kill());
         pulses.flat().forEach(tween => tween.pause());
         transitions = [
+          ...[numberOne, numberTwo].flatMap((number, index) => number ? [gsap.to(number, {
+            backgroundColor: next === index ? '#ED0001' : '#FFFFFF',
+            duration: 0.5, ease: 'power1.inOut', overwrite: 'auto',
+          })] : []),
           gsap.to(groupOne, { opacity: next === 0 ? 1 : 0.3, duration: 0.5, overwrite: 'auto' }),
           gsap.to(groupTwo, { opacity: next === 0 ? 0.2 : 1, duration: 0.5, overwrite: 'auto' }),
           gsap.to(cells, { opacity: next === 0 ? 0.5 : 1, duration: 0.5, overwrite: 'auto' }),
