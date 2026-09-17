@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.9', ready: false };
+  const app = { version: '0.6.0', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -245,7 +245,9 @@
       const numberOne = section.querySelector('.number__wrapper.is--1') || blocks[0]?.querySelector('.number__wrapper');
       const numberTwo = section.querySelector('.number__wrapper.is--2') || blocks[1]?.querySelector('.number__wrapper');
       const numbers = [numberOne, numberTwo].filter(Boolean);
-      const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo, ...numbers].map(el => [el, el.getAttribute('style')]);
+      const labels = ['.sticky__number.is--one', '.sticky__number.is--two'].map(selector => section.querySelector(selector));
+      const labelColors = labels.map(label => label ? getComputedStyle(label).color : null);
+      const saved = [...first, ...second, ...cells, ...groupOne, ...groupTwo, ...numbers, ...labels.filter(Boolean)].map(el => [el, el.getAttribute('style')]);
       let stage = -1, visible = false;
       let transitions = [];
       gsap.set([...first, ...second], { autoAlpha: 0, scale: 0, transformOrigin: 'center center' });
@@ -270,6 +272,10 @@
         transitions = [
           ...[numberOne, numberTwo].flatMap((number, index) => number ? [gsap.to(number, {
             backgroundColor: next === index ? '#ED0001' : '#FFFFFF',
+            duration: 0.5, ease: 'power1.inOut', overwrite: 'auto',
+          })] : []),
+          ...labels.flatMap((label, index) => label ? [gsap.to(label, {
+            color: next === index ? '#FFFFFF' : labelColors[index],
             duration: 0.5, ease: 'power1.inOut', overwrite: 'auto',
           })] : []),
           gsap.to(groupOne, { opacity: next === 0 ? 1 : 0.3, duration: 0.5, overwrite: 'auto' }),

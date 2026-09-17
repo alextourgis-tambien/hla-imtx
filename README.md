@@ -177,3 +177,7 @@ Les wrappers SplitText `overflow: clip` coupaient les p/g/y avec les interlignes
 ## 0.5.9 — fonds des numéros sticky
 
 Le numéro 1 a un fond #ED0001 dans la première phase et le numéro 2 un fond blanc. À 40% du parcours, les couleurs s’inversent avec une transition 0,5 s, également en remontant. Sélecteurs is--1/is--2 prioritaires, repli sur les deux blocs existants. Styles restaurés au changement de breakpoint ; mobile inchangé. Syntaxe et diff vérifiés. Embeds inchangés.
+
+## 0.6.0 — couleur des chiffres et exposants
+
+Les `.sticky__number.is--one/is--two` deviennent blancs dans leur phase active ; leur couleur calculée initiale est restaurée dans l’autre phase. Transition synchronisée à 40%, fonds rouge/blanc existants conservés, nettoyage au changement de breakpoint. Les sup sont globalement alignés text-top, top zéro et line-height 1 avec priorité sur les décalages propres aux classes Webflow ; aucune taille de police imposée. Test navigateur : phase 1 blanc/bleu initial, phase 2 bleu initial/blanc ; tous les sup ont text-top/top zéro, tailles existantes conservées. Syntaxe/diff vérifiés.
