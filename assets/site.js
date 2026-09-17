@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (window.HLAIMTX) return;
-  const app = { version: '0.5.7', ready: false };
+  const app = { version: '0.5.8', ready: false };
   window.HLAIMTX = app;
   const CDN = 'https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/';
 
@@ -134,12 +134,14 @@
         type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'hla-scroll-text-line',
         onSplit(self) {
           if (revealed) {
+            gsap.set(self.masks, { clipPath: 'none' });
             gsap.set(self.lines, { opacity: 1, yPercent: 0 });
             return;
           }
           return gsap.from(self.lines, {
             opacity: 0, yPercent: 105, duration: 0.6, stagger: 0.08, ease: 'power3.out',
             onStart: () => { revealed = true; },
+            onComplete: () => gsap.set(self.masks, { clipPath: 'none' }),
             scrollTrigger: { trigger: el, start: 'top 90%', once: true },
           });
         },
@@ -415,6 +417,7 @@
               return gsap.from(self.lines, {
                 yPercent: 105, opacity: 0, duration: 0.85,
                 stagger: 0.14, delay: 0.25, ease: 'power3.out',
+                onComplete: () => gsap.set(self.masks, { clipPath: 'none' }),
               });
             },
           }));

@@ -168,3 +168,7 @@ Suppression de la hauteur 200vh imposée par le CSS personnalisé sur desktop/ta
 ## 0.5.7 — bascule sticky à 40%
 
 À la demande d’Alex, passage de 30% à 40% du parcours sticky dans les quatre branches de mise à jour (scroll, refresh, entrée et initialisation). Hauteur pilotée par Webflow, animations et embeds conservés. Syntaxe JS et diff vérifiés.
+
+## 0.5.8 — descendantes des textes animés
+
+Les wrappers SplitText `overflow: clip` coupaient les p/g/y avec les interlignes serrés. Les deux familles de masques (hero et scroll) utilisent désormais overflow visible et un clip-path élargi de 0,2em sans modifier leur géométrie. À la fin de l’apparition, clip-path est retiré ; les lignes déjà révélées restent sans rognage après autoSplit. Vérification sur HTML préproduction du 17 septembre : titre signalé et corps lisibles desktop/mobile, hauteurs des neuf blocs mesurés identiques avant/après, tous les masques couverts (85 mobile, 57 tablette). Syntaxe JS/diff vérifiés. Embeds inchangés.

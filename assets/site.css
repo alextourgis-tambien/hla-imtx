@@ -73,3 +73,10 @@ input[type="checkbox"].Checkbox:focus-visible {
   font-weight: 400;
   font-style: italic;
 }
+
+/* Expand only the painted reveal area; preserve line spacing and block geometry. */
+.hla-text-line-mask,
+.hla-scroll-text-line-mask {
+  overflow: visible !important;
+  clip-path: inset(-0.2em);
+}
